@@ -21,7 +21,8 @@ endif()
 set(MCAP_TAG "releases/cpp/v${VERSION}")
 FetchContent_Declare(
   mcap
-  URL https://github.com/foxglove/mcap/archive/refs/tags/${MCAP_TAG}.tar.gz
+  URL https://github.com/useful-autos/mcap/archive/refs/tags/${MCAP_TAG}.tar.gz
+  #URL https://github.com/foxglove/mcap/archive/refs/tags/${MCAP_TAG}.tar.gz
   ${DOWNLOAD_EXTRACT_TIMESTAMP_ARG}
 )
 FetchContent_MakeAvailable(mcap)
