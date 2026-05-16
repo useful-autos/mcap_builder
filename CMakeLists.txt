@@ -4,7 +4,7 @@
 
 cmake_minimum_required(VERSION 3.22.1)
 
-set(VERSION "1.4.0")
+set(VERSION "2.1.3")
 
 project(mcap_builder LANGUAGES CXX VERSION ${VERSION})
 
@@ -22,7 +22,6 @@ set(MCAP_TAG "releases/cpp/v${VERSION}")
 FetchContent_Declare(
   mcap
   URL https://github.com/useful-autos/mcap/archive/refs/tags/${MCAP_TAG}.tar.gz
-  #URL https://github.com/foxglove/mcap/archive/refs/tags/${MCAP_TAG}.tar.gz
   ${DOWNLOAD_EXTRACT_TIMESTAMP_ARG}
 )
 FetchContent_MakeAvailable(mcap)
