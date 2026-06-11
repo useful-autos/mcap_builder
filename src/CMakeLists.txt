@@ -7,22 +7,23 @@ target_include_directories(mcap PUBLIC
 
 set(DEPENDENCIES "")
 
-#find_package(lz4 QUIET)
-#if (${lz4_FOUND})
-#  message(STATUS "Found lz4 from ${lz4_DIR}")
-#  list(APPEND DEPENDENCIES LZ4::lz4)
-#else()
-#  message(WARNING "Dependency LZ4 not found, disabling")
-#endif()
-#
-#find_package(zstd QUIET)
-#if (${zstd_FOUND})
-#  message(STATUS "Found zstd from ${zstd_DIR}")
-#  list(APPEND DEPENDENCIES zstd::libzstd)
-#else()
-#  message(WARNING "Dependency zstd not found, disabling")
-#  
-#endif()
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(LZ4 REQUIRED IMPORTED_TARGET liblz4)
+if (LZ4_FOUND)
+  message(STATUS "Found lz4 ${LZ4_VERSION}")
+  list(APPEND DEPENDENCIES PkgConfig::LZ4)
+else()
+  message(WARNING "Dependency LZ4 not found, disabling")
+endif()
+
+pkg_check_modules(ZSTD REQUIRED IMPORTED_TARGET libzstd)
+if (ZSTD_FOUND)
+  message(STATUS "Found zstd ${ZSTD_VERSION}")
+  list(APPEND DEPENDENCIES PkgConfig::ZSTD)
+else()
+  message(WARNING "Dependency zstd not found, disabling")
+endif()
 
 target_compile_definitions(mcap PUBLIC "MCAP_COMPRESSION_NO_LZ4")
 target_compile_definitions(mcap PUBLIC "MCAP_COMPRESSION_NO_ZSTD")
