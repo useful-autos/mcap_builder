@@ -15,6 +15,7 @@ if (LZ4_FOUND)
   list(APPEND DEPENDENCIES PkgConfig::LZ4)
 else()
   message(WARNING "Dependency LZ4 not found, disabling")
+  target_compile_definitions(mcap PUBLIC "MCAP_COMPRESSION_NO_LZ4")
 endif()
 
 pkg_check_modules(ZSTD REQUIRED IMPORTED_TARGET libzstd)
@@ -23,9 +24,7 @@ if (ZSTD_FOUND)
   list(APPEND DEPENDENCIES PkgConfig::ZSTD)
 else()
   message(WARNING "Dependency zstd not found, disabling")
+  target_compile_definitions(mcap PUBLIC "MCAP_COMPRESSION_NO_ZSTD")
 endif()
-
-target_compile_definitions(mcap PUBLIC "MCAP_COMPRESSION_NO_LZ4")
-target_compile_definitions(mcap PUBLIC "MCAP_COMPRESSION_NO_ZSTD")
 
 target_link_libraries(mcap PUBLIC ${DEPENDENCIES})
