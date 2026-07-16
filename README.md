@@ -45,6 +45,29 @@ target_link_libraries(<target> PUBLIC mcap)
   * if present, links them to the `mcap` library
   * if they are not present automatically define `MCAP_COMPRESSION_NO_LZ4` and `MCAP_COMPRESSION_NO_ZSTD` 
 
+## Versioning & releasing (Useful Automations)
+
+The Debian package version is `<VERSION>-<PACKAGE_REVISION>`, built by the
+`ci_cd` `Jenkinsfile.mcap` pipeline. Both halves are controlled from this repo:
+
+- **`VERSION`** is derived from the git tag and names the upstream mcap C++
+  release we wrap. It **must** match an existing `releases/cpp/v<VERSION>` tag on
+  the [`useful-autos/mcap`](https://github.com/useful-autos/mcap) fork — that is
+  what `FetchContent` pulls. The git tag therefore stays pinned to the upstream
+  version (e.g. tag `v1.4.0` ⇄ fork `releases/cpp/v1.4.0`); it does not increment
+  for packaging-only changes.
+- **`PACKAGE_REVISION`** (in `CMakeLists.txt`) is the packaging iteration.
+
+CI builds the newest tag by creation date, so:
+
+- **New upstream mcap version:** create tag `vX.Y.Z` (matching a fork
+  `releases/cpp/vX.Y.Z`) and reset `PACKAGE_REVISION` to `1`.
+- **Packaging-only rebuild:** **force-move the same tag** onto the new commit —
+  and in that commit **bump `PACKAGE_REVISION` by 1**. Without the bump, apt sees
+  no newer version and hosts keep the stale package. The revision is committed
+  here (not derived from apt/Jenkins state) so it is reproducible and survives an
+  apt-database wipe or a Jenkins reset.
+
 ## Notes
 MCAP is natively a header-only library, but in this wrapper, it is built into a binary library. 
 
